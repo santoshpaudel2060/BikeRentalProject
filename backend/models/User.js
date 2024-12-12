@@ -14,6 +14,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    admin: 
+    { type: Boolean, 
+        default: false 
+    }, 
+    contactNumber: String,
     otp: String,
     otpExpiration: Date,
 });

@@ -1,22 +1,20 @@
-// middleware/authMiddleware.js
-const jwt = require('jsonwebtoken');
+// middleware/auth.js
+const jwt = require("jsonwebtoken");
 
-// Middleware to protect routes
-const protect = (req, res, next) => {
-    const token = req.headers['authorization'];
+const authMiddleware = (req, res, next) => {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-        return res.status(401).json({ message: 'No token provided, authorization denied' });
+        return res.status(401).json({ message: "No authorization token found." });
     }
 
     try {
-        // Verify token
-        const decoded = jwt.verify(token, 'your_jwt_secret');
-        req.user = decoded;  // Attach user info to request object
-        next();  // Proceed to the next middleware or route handler
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded; // Attach user info to the request object
+        next(); // Proceed to the next middleware or route handler
     } catch (error) {
-        res.status(401).json({ message: 'Token is not valid' });
+        res.status(401).json({ message: "Invalid or expired token." });
     }
 };
 
-module.exports = protect;
+module.exports = authMiddleware;

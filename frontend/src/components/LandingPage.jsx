@@ -34,7 +34,7 @@ export default function LandingPage() {
 
     return (
         <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-100 via-white to-gray-200">
-            <section className="relative h-[90vh] bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: 'url("/images/bike-hero.jpg")' }}>
+            {/* <section className="relative h-[90vh] bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: 'url("/images/bike-hero.jpg")' }}>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
                 <div className="relative z-10 text-center text-white px-6">
                     <h1 className="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in">Explore the City on Two Wheels</h1>
@@ -44,6 +44,20 @@ export default function LandingPage() {
                 <div className="absolute bottom-10 w-full flex justify-center animate-bounce">
                     <p className="text-white">↓ Scroll Down</p>
                 </div>
+            </section> */}
+
+
+            <section className="relative h-[90vh] bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: 'url("/images/cool-motorcycle-outdoors.jpg")',backgroundAttachment:"fixed" }}>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
+                <div className="relative z-10 text-center text-white px-6">
+                    <h1 className="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in">Explore the City on Two Wheels</h1>
+                    <p className="mb-6 text-lg animate-fade-in delay-200">Rent a bike and discover the freedom of the open road. Easy, affordable, and eco-friendly.</p>
+                   <div className="flex gap-x-4 mx-auto justify-center items-center ">
+                   <button onClick={handleRentNow} className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white py-3 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-105">Rent Now</button> <button onClick={()=>navigate('/add-bike')} className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white py-3 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-105" >Upload bikes</button>
+                   </div>
+
+                </div>
+                
             </section>
 
             <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
@@ -61,7 +75,7 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <section className="py-16 bg-gray-50">
+            {/* <section className="py-16 bg-gray-50">
                 <div className="container mx-auto">
                     <h2 className="text-3xl font-bold text-center mb-8 text-gray-700">User Reviews</h2>
                     <form onSubmit={handleSubmitReview} className="max-w-lg mx-auto mb-12 bg-white p-8 rounded-lg shadow-lg transition transform hover:scale-105">
@@ -103,7 +117,7 @@ export default function LandingPage() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section> */}
         </div>
     );
 }

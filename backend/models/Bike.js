@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
 
 const bikeSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  cc: { type: Number, required: true },
-  owner: { type: String, required: true },
-  imageUrl: { type: String } ,
-  rented: { type: Boolean, default: false },
-  rentedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
-  rentalDate: { type: Date } 
+  title: String,
+  description: String,
+  price: Number,
+  cc: Number,
+  // owner: String,
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  imageUrl: String,
+  isRented: { type: Boolean, default: false },
+  address: String,
+  renter: String,  
+  rentalInfo: {
+    rentStartDate: Date,
+    rentEndDate: Date,
+    rentalAmount: Number
+  }
 });
 
-module.exports = mongoose.model('Bike', bikeSchema);
+const Bike = mongoose.model('Bike', bikeSchema);
+
+module.exports = Bike;

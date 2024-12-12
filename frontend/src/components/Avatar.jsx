@@ -22,8 +22,9 @@ const Avatar = () => {
         localStorage.removeItem("userEmail");
         localStorage.removeItem("userName");
         localStorage.removeItem("avatarSrc");
-        window.location.reload();
         navigate("/auth");
+        window.location.reload();
+        
     };
 
     // Close dropdown when clicking outside
@@ -50,7 +51,7 @@ const Avatar = () => {
 
         {/* Dropdown Menu */}
         {isDropdownOpen && (
-            <div className="dropdown absolute right-0 mt-2 w-40 bg-black rounded-lg shadow-lg p-2">
+            <div className="dropdown absolute right-0 mt-2 w-40 bg-black rounded-lg shadow-lg p-2 z-index-2000">
                 {/* Display Email */}
                 <div className="email text-sm text-white-700 mb-2">
                     {userEmail}

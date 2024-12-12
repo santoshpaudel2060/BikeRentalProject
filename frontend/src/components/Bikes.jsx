@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BikeRentalForm from './BikeRentalForm'; 
+import { methods } from '../utils/methods';
+
 
 const Bikes = () => {
   const [bikes, setBikes] = useState([]);
@@ -14,8 +16,11 @@ const Bikes = () => {
   
   useEffect(() => {
     const fetchBikes = async () => {
+      const loggedInUserId = methods.getUserByFromLS();
+      console.log("loggedInUserId", loggedInUserId);
+
       try {
-        const response = await axios.get('http://localhost:4000/api/bikes');
+        const response = await axios.get(`http://localhost:4000/api/bikes?userId=${loggedInUserId}`);
         setBikes(response.data);
       } catch (error) {
         console.error('Error fetching bikes:', error);
@@ -39,6 +44,7 @@ const Bikes = () => {
     setSelectedBike(bike)
     setIsModalOpen(true); 
   };
+  
 
   const handleCloseModal = () => {
     setIsModalOpen(false); 
@@ -85,18 +91,18 @@ const Bikes = () => {
               >
                 <h3 className="text-xl font-semibold text-gray-700">{bike.title}</h3>
                 <p className="text-gray-600 mt-2">{bike.description}</p>
-                <p className="text-gray-700 mt-2">Price: Rs {bike.price}</p>
+                <p className="text-gray-700 mt-2">Price: Rs {bike.price} /day</p>
                 <p className="text-gray-700">CC: {bike.cc}</p>
-                <p className="text-gray-700">Owner: {bike.owner}</p>
+                <p className="text-gray-700">Owner: {bike.owner?.name}</p>
 
                 {bike.imageUrl ? (
                   <div className="mt-4">
-                    <img
-                      src={`http://localhost:4000/${bike.imageUrl.replace('\\', '/')}`}
+                   <img
+                      src={` ${bike.imageUrl ? ` http://localhost:4000${bike.imageUrl}`:"https://images.pexels.com/photos/102155/pexels-photo-102155.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}`}
                       alt={bike.title}
                       className="w-full h-64 object-cover rounded-lg"
                     />
-                  </div>
+                  </div>  
                 ) : (
                   <div className="mt-4 text-center text-gray-500">No image available</div>
                 )}
@@ -105,7 +111,11 @@ const Bikes = () => {
                 <div className="mt-4">
                   <button
                     className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
-                    onClick={() => handleRentNowClick(bike)}
+                    onClick={() =>{
+                      // alert("rented sucessfully")
+                      handleRentNowClick(bike)} 
+                     }
+                   
                   >
                     Rent
                   </button>
