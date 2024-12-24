@@ -20,6 +20,7 @@ const socketIo = require('socket.io');  // Import socket.io
 const dotenv = require('dotenv')
 const listedBikesRoute = require('./routes/ListedBikes'); // Correct path to your ListedBikes route
 const morgan = require('morgan')
+const reviewRoutes = require('./routes/reviewRoutes');
 
 dotenv.config()
 app.use(cors());
@@ -29,6 +30,7 @@ app.use(morgan("common"))
 app.use(express.json({ limit: '10mb' })); // Adjust the limit as per your need
 app.use(express.urlencoded({ limit: '10mb', extended: true })); // For URL-encoded data
 
+app.use('/api/reviews', reviewRoutes); // Register review routes
 
 app.use('/api/auth', authRoutes);
 app.use("/api/bookings",bookingRoutes)
@@ -53,6 +55,5 @@ io.on('connection', (socket) => {
 
 connectDb(app);
 
-require('dotenv').config();
 
 

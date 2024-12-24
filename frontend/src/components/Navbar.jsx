@@ -15,8 +15,16 @@ const Navbar = () => {
   const [userInitial, setUserInitial] = useState("");
   const [avatarSrc, setAvatarSrc] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isAdmin,setIsAdmin] =useState(false)
+
+
 
   const navigate = useNavigate();
+
+console.log()
+  useEffect(()=>{
+    setIsAdmin(localStorage.getItem("isAdmin")==="true");
+  },[])
 
   // Check for login and user details
   useEffect(() => {
@@ -102,6 +110,9 @@ const Navbar = () => {
               <Link className="hover:text-blue-400" to="/add-bike">
                 Add Bike
               </Link>
+            { isAdmin &&   <Link className="hover:text-blue-400" to="/admin-dashboard">
+                Admin Dashboard
+              </Link>}
               <div className="relative">
                 <Avatar
                   src={avatarSrc}

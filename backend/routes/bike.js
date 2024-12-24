@@ -5,7 +5,8 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const Bike = require('../models/Bike');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const Booking = require('../models/Booking');
 const router = express.Router();
 
 
@@ -37,7 +38,7 @@ router.post('/', upload.single('image'), async (req, res) => {
   if (!title || !description || !price || !cc || !owner) {
     return res.status(400).json({ message: 'Please provide all required fields.' });
   }
-console.log(imageUrl);
+  console.log(imageUrl);
 
   const newBike = new Bike({
     title,
@@ -45,7 +46,8 @@ console.log(imageUrl);
     price,
     cc,
     owner,
-    imageUrl
+    imageUrl,
+    status: "pending"
   });
 
   try {
@@ -60,7 +62,7 @@ console.log(imageUrl);
 
 router.get('/', async (req, res) => {
   try {
-    let  { userId: excludeUserId, owner: ownerId } = req.query;
+    let { userId: excludeUserId, owner: ownerId, status } = req.query;
 
     // Check if userId and owner are not equal to "null"
     if (excludeUserId === 'null') {
@@ -76,7 +78,11 @@ router.get('/', async (req, res) => {
         ...(ownerId ? [{ owner: ownerId }] : []),
         ...(excludeUserId ? [{ owner: { $ne: excludeUserId } }] : []),
       ],
+      ...(status ? { status: status } : {}),
     };
+
+    console.log("status", filter)
+
 
     // Remove empty objects from the filter
     filter.$or = filter.$or.filter((obj) => Object.keys(obj).length > 0);
@@ -86,6 +92,8 @@ router.get('/', async (req, res) => {
       delete filter.$or;
     }
 
+    console.log("filter", filter)
+
     // Fetch bikes based on the filter
     const bikes = await Bike.find(filter).populate({
       path: 'owner',
@@ -93,13 +101,84 @@ router.get('/', async (req, res) => {
     }); // i dont want to select owner's password 
 
 
-
-    res.json(bikes);
+    return res.json(bikes);
   } catch (error) {
     console.error('Error fetching bikes:', error);
     res.status(500).json({ error: 'Server Error' });
   }
 });
+
+
+// Approve a bike
+router.patch('/approve/:id', async (req, res) => {
+  try {
+    const bikeId = req.params.id;
+    const bike = await Bike.findByIdAndUpdate(bikeId, { approved: true }, { new: true });
+    if (!bike) {
+      return res.status(404).json({ message: 'Bike not found' });
+    }
+    res.status(200).json({ message: 'Bike approved successfully', bike });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error approving bike' });
+  }
+});
+
+router.put("/:bikeId", async (req, res) => {
+  try {
+    const bikeId = req.params.bikeId;
+    const updatedBike = await Bike.findByIdAndUpdate(bikeId, req.body, { new: true });
+    if (!updatedBike) {
+      return res.status(404).json({ message: "Bike not found" });
+    }
+    res.status(200).json({ message: "Bike updated successfully", updatedBike });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating bike" });
+  }
+});
+// Reject a bike
+router.delete('/reject/:id', async (req, res) => {
+  try {
+    const bikeId = req.params.id;
+    const bike = await Bike.findByIdAndDelete(bikeId);
+    if (!bike) {
+      return res.status(404).json({ message: 'Bike not found' });
+    }
+    res.status(200).json({ message: 'Bike rejected successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error rejecting bike' });
+  }
+});
+
+
+router.get('/', async (req, res) => {
+  try {
+    const bikes = await Bike.find({ approved: true }); // Only approved bikes
+    res.status(200).json(bikes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching bikes' });
+  }
+});
+
+router.get("/analytics", async (req, res) => {
+  try {
+    const bikes = await Bike.countDocuments(); // Only approved bikes
+    const totalRental = await Bike.countDocuments({
+      isRented:true
+    })
+
+    res.status(200).json({
+      totalBikes: bikes,
+      totalRental
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching bikes" });
+  }
+})
 
 
 module.exports = router;

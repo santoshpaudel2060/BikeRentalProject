@@ -20,7 +20,7 @@ const Bikes = () => {
       console.log("loggedInUserId", loggedInUserId);
 
       try {
-        const response = await axios.get(`http://localhost:4000/api/bikes?userId=${loggedInUserId}`);
+        const response = await axios.get(`http://localhost:4000/api/bikes?userId=${loggedInUserId}&status=${"approved"}`);
         setBikes(response.data);
       } catch (error) {
         console.error('Error fetching bikes:', error);
@@ -90,7 +90,7 @@ const Bikes = () => {
                 className="bg-white p-4 rounded-lg shadow-md transform transition-all duration-300 hover:scale-105"
               >
                 <h3 className="text-xl font-semibold text-gray-700">{bike.title}</h3>
-                <p className="text-gray-600 mt-2">{bike.description}</p>
+                <p className="text-gray-600 mt-2 min-h-40">{bike.description}</p>
                 <p className="text-gray-700 mt-2">Price: Rs {bike.price} /day</p>
                 <p className="text-gray-700">CC: {bike.cc}</p>
                 <p className="text-gray-700">Owner: {bike.owner?.name}</p>
@@ -100,7 +100,7 @@ const Bikes = () => {
                    <img
                       src={` ${bike.imageUrl ? ` http://localhost:4000${bike.imageUrl}`:"https://images.pexels.com/photos/102155/pexels-photo-102155.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}`}
                       alt={bike.title}
-                      className="w-full h-64 object-cover rounded-lg"
+                      className="w-full h-64 object-contain rounded-lg"
                     />
                   </div>  
                 ) : (
@@ -110,14 +110,15 @@ const Bikes = () => {
                 {/* Rent Now button */}
                 <div className="mt-4">
                   <button
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+                  disabled={bike.isRented}
+                    className={`w-full ${bike.isRented ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500"}  bg-blue-500 text-white py-2 px-4 rounded-md ${bike.isRented ? "hover:bg-red-500  transition duration-300":" hover:bg-blue-600 transition duration-300"}`}
                     onClick={() =>{
                       // alert("rented sucessfully")
                       handleRentNowClick(bike)} 
                      }
                    
                   >
-                    Rent
+                    { bike.isRented ? "Rented" : "Rent"}
                   </button>
                 </div>
               </div>

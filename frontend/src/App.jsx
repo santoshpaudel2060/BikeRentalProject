@@ -19,7 +19,7 @@ import RentalHistory from './components/RentalHistory';
 import MyOrders from './pages/MyOrders';
 import RentalHistoryItem from './components/RentalHistoryItem';
 import MyBikes from './pages/MyBikes';
-
+import AdminDashboard from './components/AdminDashboard';
 const UserContext = createContext();
 
 
@@ -70,6 +70,7 @@ const App = () => {
                     <Route path="/rental-history" component={<RentalHistory/>} />
                     <Route path="/RentalHistoryItem" component={<RentalHistoryItem/>} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 </Routes>
                 <Footer />
             </Router>

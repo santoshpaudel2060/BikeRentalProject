@@ -8,6 +8,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const { forgotPassword, resetPassword } = require('../controllers/authController');
+const { Admin } = require('mongodb');
 
 
 
@@ -51,9 +52,7 @@ router.post('/login', async (req, res) => {
 
         // Find the user by email
         const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: 'User not found' });
-        }
+      
 
         // Compare the provided password with the hashed password in the database
         const isMatch = await bcrypt.compare(password, user.password);
@@ -69,12 +68,14 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({ token,email:email ,userId:user._id});
+        res.status(200).json({ token,email:email ,userId:user._id ,admin:user.admin ,userName:user.name});
          // Respond with the token
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error logging in', error: error.message });
     }
+    
+ 
 });
 
 

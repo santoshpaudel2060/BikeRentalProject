@@ -6,7 +6,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const BookingModel = require('../models/Booking');
-
+const BikeModel = require('../models/Bike');
 const router = express.Router();
 
 // Route to create a new booking
@@ -75,12 +75,14 @@ router.post("/create", async (req, res) => {
       return res.status(400).json({ message: "You cannot rent your own bike" });
     }
 
-    // Create a new booking
+    
     const newBooking = await BookingModel.create({
       ...rest,
       user: new mongoose.Types.ObjectId(user),
       bike: new mongoose.Types.ObjectId(bike),
     });
+    bikeDetails.isRented = true;
+    await bikeDetails.save();
 
     // Return success response
     return res.status(201).json({
