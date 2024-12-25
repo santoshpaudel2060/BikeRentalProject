@@ -258,9 +258,9 @@ export default function LandingPage() {
       description: "Rent a vehicle any time, day or night",
     },
     {
-      name: "Easy Payment",
-      icon: CreditCard,
-      description: "Secure and quick payment options",
+      name: "customer service",
+      icon: CreditCard, 
+      description: "24/7 customer support and assistance",  
     },
   ];
 
@@ -370,13 +370,14 @@ export default function LandingPage() {
           <h2 className="text-3xl font-bold mb-12 text-gray-700">
             Our Services
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
             {services.map((service) => (
               <div
                 key={service.name}
                 className="bg-gradient-to-b from-white to-gray-50 p-8 rounded-xl shadow-xl transition transform hover:scale-105 hover:shadow-2xl"
               >
-                <service.icon className="w-12 h-12 mx-auto mb-4 text-blue-500" />
+                <service.icon className="w-12 h-12 mx-auto mb-4 text-blue-500 " />
                 <h3 className="text-xl font-semibold mb-2 text-gray-800">
                   {service.name}
                 </h3>
