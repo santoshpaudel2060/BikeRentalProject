@@ -116,6 +116,21 @@ const AddBike = () => {
               required
             />
           </div>
+          {/* <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Contact
+            </label>
+            <input
+              type="string"
+              min={10 }
+              max={10}
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            />
+          </div> */}
+
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Contact
@@ -123,11 +138,28 @@ const AddBike = () => {
             <input
               type="text"
               value={contact}
-              onChange={(e) => setContact(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                // Only allow numbers
+                if (/^\d*$/.test(value)) {
+                  setContact(value);
+                }
+              }}
+              onBlur={() => {
+                if (contact.length !== 10) {
+                  alert("Contact number must be exactly 10 digits.");
+                }
+              }}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              maxLength={10} // Prevent input longer than 10 digits
               required
             />
           </div>
+
+
+
+
+
           {/* Description Input */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">
@@ -143,7 +175,7 @@ const AddBike = () => {
           </div>
 
           {/* Price Input */}
-          <div>
+          {/* <div>
             <label className="block text-gray-700 font-semibold mb-2">
               Price
             </label>
@@ -154,7 +186,28 @@ const AddBike = () => {
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
+          </div> */}
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Price
+            </label>
+            <input
+              type="number"
+              value={price}
+              min={1} // Ensures the minimum value is 1
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value >= 1 || value === "") { // Allow only valid values or an empty string
+                  setPrice(value);
+                }
+              }}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            />
           </div>
+
+
 
           {/* CC Input */}
           <div>
@@ -162,11 +215,14 @@ const AddBike = () => {
             <input
               type="number"
               value={cc}
+              min={100}
               onChange={(e) => setCc(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
+
+
 
           {/* Owner Input */}
           <div>
