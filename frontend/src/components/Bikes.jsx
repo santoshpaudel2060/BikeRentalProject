@@ -158,16 +158,6 @@
 
 // export default Bikes;
 
-
-
-
-
-
-
-
-
-
-
 // import { useEffect, useState } from "react";
 // import axios from "axios";
 // import BikeRentalForm from "./BikeRentalForm";
@@ -356,11 +346,6 @@
 
 // export default Bikes;
 
-
-
-
-
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BikeRentalForm from "./BikeRentalForm";
@@ -374,11 +359,11 @@ const Bikes = () => {
   const [selectedBike, setSelectedBike] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showLoginPrompt, setShowLoginPrompt] = useState(false); // State for login prompt
+  const user = methods.getUserByFromLS();
 
   useEffect(() => {
     const fetchBikes = async () => {
       const loggedInUserId = methods.getUserByFromLS();
-      console.log("loggedInUserId", loggedInUserId);
 
       try {
         const response = await axios.get(
@@ -420,11 +405,6 @@ const Bikes = () => {
     setIsModalOpen(false);
     setSelectedBike(null);
     setShowLoginPrompt(false); // Close the login prompt if modal is closed
-  };
-
-  const handleAddBike = (newBike) => {
-    // Prepend the new bike to the list
-    setBikes((prevBikes) => [newBike, ...prevBikes]);
   };
 
   const filteredBikes = bikes.filter(
@@ -513,6 +493,9 @@ const Bikes = () => {
                         : " hover:bg-blue-600 transition duration-300"
                     }`}
                     onClick={() => {
+                      if (!user) {
+                        return alert("Please log in to rent a bike!");
+                      }
                       handleRentNowClick(bike);
                     }}
                   >

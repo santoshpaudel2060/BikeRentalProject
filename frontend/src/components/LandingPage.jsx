@@ -1,5 +1,3 @@
-
-
 // import { MapPin, Clock, CreditCard } from "lucide-react";
 // import { useNavigate } from "react-router-dom";
 // import { useEffect, useState } from "react";
@@ -107,7 +105,6 @@
 //       Upload bikes
 //     </button>
 //   ) : null;
-
 
 //   return (
 //     <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-100 via-white to-gray-200">
@@ -223,12 +220,6 @@
 //   );
 // }
 
-
-
-
-
-
-
 import { MapPin, Clock, CreditCard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -242,9 +233,8 @@ export default function LandingPage() {
   const [reviews, setReviews] = useState([]);
   const [showAllReviews, setShowAllReviews] = useState(false);
   const user = methods.getUserByFromLS();
-  
+
   // Assume `user.isAdmin` is a boolean indicating if the user is an admin
-  const isAdmin = user && user.isAdmin;
 
   const services = [
     {
@@ -259,8 +249,8 @@ export default function LandingPage() {
     },
     {
       name: "customer service",
-      icon: CreditCard, 
-      description: "24/7 customer support and assistance",  
+      icon: CreditCard,
+      description: "24/7 customer support and assistance",
     },
   ];
 
@@ -326,7 +316,7 @@ export default function LandingPage() {
     ));
   };
 
-  const uploadBikeButton = user && typeof user === "object" && user.userName && !isAdmin ? (
+  const uploadBikeButton = user ? (
     <button
       onClick={() => navigate("/add-bike")}
       className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white py-3 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-105"
@@ -338,7 +328,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-100 via-white to-gray-200">
       <section
-        className="relative h-[90vh] bg-cover bg-center flex justify-center items-center"
+        className="relative z-[0] h-[90vh] bg-cover bg-center flex justify-center items-center"
         style={{
           backgroundImage: 'url("/images/cool-motorcycle-outdoors.jpg")',
           backgroundAttachment: "fixed",
@@ -353,15 +343,17 @@ export default function LandingPage() {
             Rent a bike and discover the freedom of the open road. Easy,
             affordable, and eco-friendly.
           </p>
-          <div className="flex gap-x-4 mx-auto justify-center items-center ">
-            <button
-              onClick={handleRentNow}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white py-3 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-105"
-            >
-              Rent Now
-            </button>
-            {uploadBikeButton}
-          </div>
+          {user && (
+            <div className="flex gap-x-4 mx-auto justify-center items-center ">
+              <button
+                onClick={handleRentNow}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white py-3 px-6 rounded-full shadow-lg transform transition duration-300 hover:scale-105"
+              >
+                Rent Now
+              </button>
+              {uploadBikeButton}
+            </div>
+          )}
         </div>
       </section>
 
@@ -370,7 +362,7 @@ export default function LandingPage() {
           <h2 className="text-3xl font-bold mb-12 text-gray-700">
             Our Services
           </h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
             {services.map((service) => (
               <div
@@ -393,43 +385,47 @@ export default function LandingPage() {
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-700">
             User Reviews
           </h2>
-          <form
-            onSubmit={handleSubmitReview}
-            className="max-w-lg mx-auto mb-12 bg-white p-8 rounded-lg shadow-lg transition transform hover:scale-105"
-          >
-            <div className="mb-4">
-              <label className="block text-lg font-medium mb-2 text-gray-700">
-                Rate us:
-              </label>
-              <div className="flex justify-center space-x-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    type="button"
-                    className={`text-2xl ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
-                    onClick={() => setRating(star)}
-                  >
-                    ★
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mb-4">
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                rows="4"
-                placeholder="Leave your comment here..."
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white py-2 px-4 rounded-full w-full shadow-lg transform transition duration-300 hover:scale-105"
+          {user && (
+            <form
+              onSubmit={handleSubmitReview}
+              className="max-w-lg mx-auto mb-12 bg-white p-8 rounded-lg shadow-lg transition transform hover:scale-105"
             >
-              Submit Review
-            </button>
-          </form>
+              <div className="mb-4">
+                <label className="block text-lg font-medium mb-2 text-gray-700">
+                  Rate us:
+                </label>
+                <div className="flex justify-center space-x-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      className={`text-2xl ${
+                        star <= rating ? "text-yellow-400" : "text-gray-300"
+                      }`}
+                      onClick={() => setRating(star)}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-4">
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  rows="4"
+                  placeholder="Leave your comment here..."
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white py-2 px-4 rounded-full w-full shadow-lg transform transition duration-300 hover:scale-105"
+              >
+                Submit Review
+              </button>
+            </form>
+          )}
 
           <div className="max-w-lg mx-auto">
             {renderReviews()}

@@ -139,15 +139,10 @@ const AddBike = () => {
               type="text"
               value={contact}
               onChange={(e) => {
-                const value = e.target.value;
+                const value = +e.target.value;
                 // Only allow numbers
-                if (/^\d*$/.test(value)) {
+                if (value >= 0) {
                   setContact(value);
-                }
-              }}
-              onBlur={() => {
-                if (contact.length !== 10) {
-                  alert("Contact number must be exactly 10 digits.");
                 }
               }}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -155,10 +150,6 @@ const AddBike = () => {
               required
             />
           </div>
-
-
-
-
 
           {/* Description Input */}
           <div>
@@ -197,8 +188,9 @@ const AddBike = () => {
               value={price}
               min={1} // Ensures the minimum value is 1
               onChange={(e) => {
-                const value = e.target.value;
-                if (value >= 1 || value === "") { // Allow only valid values or an empty string
+                const value = +e.target.value;
+                // Only allow numbers
+                if (value >= 0) {
                   setPrice(value);
                 }
               }}
@@ -207,8 +199,6 @@ const AddBike = () => {
             />
           </div>
 
-
-
           {/* CC Input */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2">CC</label>
@@ -216,13 +206,17 @@ const AddBike = () => {
               type="number"
               value={cc}
               min={100}
-              onChange={(e) => setCc(e.target.value)}
+              onChange={(e) => {
+                const value = +e.target.value;
+                // Only allow numbers
+                if (value >= 0) {
+                  setCc(value);
+                }
+              }}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
           </div>
-
-
 
           {/* Owner Input */}
           <div>

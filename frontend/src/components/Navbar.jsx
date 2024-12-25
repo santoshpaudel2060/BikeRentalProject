@@ -1,11 +1,5 @@
-
-
-
-
-
-
 import { Bike } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Avatar from "./Avatar";
 
@@ -15,16 +9,12 @@ const Navbar = () => {
   const [userInitial, setUserInitial] = useState("");
   const [avatarSrc, setAvatarSrc] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isAdmin,setIsAdmin] =useState(false)
+  const [isAdmin, setIsAdmin] = useState(false);
 
-
-
-  const navigate = useNavigate();
-
-console.log()
-  useEffect(()=>{
-    setIsAdmin(localStorage.getItem("isAdmin")==="true");
-  },[])
+  console.log();
+  useEffect(() => {
+    setIsAdmin(localStorage.getItem("isAdmin") === "true");
+  }, []);
 
   // Check for login and user details
   useEffect(() => {
@@ -54,7 +44,7 @@ console.log()
   };
 
   return (
-    <header className="bg-gray-900 text-white px-4 py-4 shadow-md">
+    <header className="bg-black text-white px-4 py-4 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo and Title */}
         <Link to="/" className="flex items-center">
@@ -110,9 +100,11 @@ console.log()
               <Link className="hover:text-blue-400" to="/add-bike">
                 Add Bike
               </Link>
-            { isAdmin &&   <Link className="hover:text-blue-400" to="/admin-dashboard">
-                Admin Dashboard
-              </Link>}
+              {isAdmin && (
+                <Link className="hover:text-blue-400" to="/admin-dashboard">
+                  Admin Dashboard
+                </Link>
+              )}
               <div className="relative">
                 <Avatar
                   src={avatarSrc}
